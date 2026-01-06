@@ -8,6 +8,8 @@ const { notFound, errorHandler } = require('./src/middleware/errorHandler');
 // Importar rutas
 const productRoutes = require('./src/routes/products');
 const mascotaRoutes = require('./src/routes/mascotas');
+const authRoutes = require('./src/routes/auth');
+const empleadoRoutes = require('./src/routes/Empleados');
 
 // Conectar a MongoDB
 connectDB();
@@ -37,11 +39,22 @@ if (process.env.NODE_ENV === 'development') {
 // Ruta de prueba
 app.get('/', (req, res) => {
   res.json({
-    message: '🚀 API de Mascotas funcionando correctamente',
-    version: '1.0.0',
+    message: '🚀 API de Mascotas y Empleados funcionando correctamente',
+    version: '2.0.0',
     endpoints: {
+      auth: '/api/auth',
+      empleados: '/api/empleados',
       products: '/api/products',
       mascotas: '/api/mascotas'
+    },
+    documentacion: {
+      login: 'POST /api/auth/login',
+      registro: 'POST /api/auth/register',
+      empleados_crud: 'GET|POST|PUT|DELETE /api/empleados',
+      historial_medico: {
+        operaciones: 'POST|PUT|DELETE /api/empleados/:id/operaciones',
+        citas: 'POST|PUT|DELETE /api/empleados/:id/citas'
+      }
     }
   });
 });
@@ -49,6 +62,8 @@ app.get('/', (req, res) => {
 // Rutas de la API
 app.use('/api/products', productRoutes);
 app.use('/api/mascotas', mascotaRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/empleados', empleadoRoutes);
 
 // ==================== MANEJO DE ERRORES ====================
 
